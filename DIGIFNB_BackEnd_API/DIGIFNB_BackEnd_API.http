@@ -1,0 +1,6 @@
+@DIGIFNB_BackEnd_API_HostAddress = http://localhost:5130
+
+GET {{DIGIFNB_BackEnd_API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
