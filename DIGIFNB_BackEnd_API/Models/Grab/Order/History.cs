@@ -13,6 +13,8 @@ namespace DIGIFNB_BackEnd_API.Models.Grab.Order
         public decimal TotalAmount { get; set; }
         [Required]
         public string Status { get; set; }
+        [Required]
+        public DateTime CreatedAt { get; set; }
 
     }
 }

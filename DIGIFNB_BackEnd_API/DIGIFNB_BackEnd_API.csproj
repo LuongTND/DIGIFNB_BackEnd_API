@@ -10,6 +10,7 @@
     <PackageReference Include="DotNetSeleniumExtras.WaitHelpers" Version="3.11.0" />
     <PackageReference Include="HtmlAgilityPack" Version="1.11.65" />
     <PackageReference Include="HtmlAgilityPack.NetCore" Version="1.5.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.OData" Version="9.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.8">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

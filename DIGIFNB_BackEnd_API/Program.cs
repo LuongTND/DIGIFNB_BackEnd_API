@@ -1,7 +1,13 @@
-using DIGIFNB_BackEnd_API.Data;
+﻿using DIGIFNB_BackEnd_API.Data;
+using DIGIFNB_BackEnd_API.Models.Grab.Feedback;
+using DIGIFNB_BackEnd_API.Models.Grab.Order;
 using DIGIFNB_BackEnd_API.Services.Merchant_Grab;
 using DIGIFNB_BackEnd_API.Services.Partner_Shoppe;
+using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Microsoft.OData.ModelBuilder;
+using System.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,10 +20,34 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
 builder.Services.AddScoped<IDataGrabService, DataGrabService>();
 builder.Services.AddScoped<IDataShoppeService, DataShoppeService>();
 
+
+//odata
+ODataConventionModelBuilder modelBuilder = new ODataConventionModelBuilder();
+modelBuilder.EntitySet<Feedback>("Feedbacks");
+modelBuilder.EntitySet<History>("Histories");
+modelBuilder.EntitySet<Preparing>("Preparings");
+modelBuilder.EntitySet<Ready>("Readies");
+modelBuilder.EntitySet<Upcoming>("Upcomings");
+
+
+builder.Services.AddControllers().AddOData(opt => opt.Select().Expand().Filter().OrderBy().Count().SetMaxTop(null)
+                            .AddRouteComponents("odata", modelBuilder.GetEdmModel()));
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllCors",
+
+        builder => builder
+            .AllowAnyOrigin()
+            //.WithOrigins("http://localhost:3000")// Allows all origins
+            .AllowAnyMethod()    // Allows all HTTP methods
+            .AllowAnyHeader());  // Allows all headers
+});
 
 var app = builder.Build();
 
@@ -29,6 +59,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+// Use CORS policy
+app.UseCors("AllowAllCors");
 
 app.UseAuthorization();
 
